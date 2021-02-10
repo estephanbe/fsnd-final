@@ -1,0 +1,10 @@
+import os
+
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get('ALGORITHMS')
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
+PRODUCT_PER_PAGE = os.environ.get('PRODUCT_PER_PAGE')
+SELLER_PER_PAGE = os.environ.get('SELLER_PER_PAGE')
