@@ -1,0 +1,57 @@
+<div class="mt-4 pt-4">
+    <div class="row d-flex">
+        <div class="col-6">
+            <img src="{{ seller.avatar ? seller.avatar : 'https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg' }}" 
+            alt="{{ seller.name }}"
+            class="img-fluid seller_photo">
+        </div>
+        <div class="col-6 pt-4">
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <h1 class="seller-title"> {{ seller.name | titlecase }} </h1>
+                <h5>Total Sales: {{ seller.total_sold_amount | currency:'USD':'symbol':'1.2-2' }}</h5>
+            </div>
+            <div class="p-2">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5>Registered since {{ seller.registration_date }}</h5>
+                </div>
+                <div class="container p-4 seller-description">
+                    {{ seller.store_description ? seller.store_description : 'There is no avaialable description' }}
+                </div>
+                <div class="seller-meta mt-4">
+                    <p>This seller sold <strong>{{ seller.total_sold_products }}</strong> product{{ seller.total_sold_products != 1 ? 's' : '' }}</p>
+                    <p *ngIf="seller.website">You can visit the seller's website by pressing <a href="{{ seller.website }}">here!</a></p>
+                    <p *ngIf="seller.facebook_link">You can visit the seller's Facebook account by pressing <a href="{{ seller.facebook_link }}">here!</a></p>
+                    <p *ngIf="seller.phone_number">The seller's phone number is <strong>{{ seller.phone_number }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 p-4">
+        <h3 class="seller-review-title" layout="row"><hr flex/><strong>Related Products</strong><hr flex/></h3>
+
+        <div class="row">
+            <div class="col-4 mb-4" *ngFor="let product of seller.related_products">
+                <div class="card">
+                    <img class="card-img-top" 
+                    src="{{ product.imageUrl ? product.imageUrl : 'https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg' }}" 
+                    alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-between">
+                            <span>
+                                {{ product.name | titlecase }}  
+                                <span class="cat_title">({{ product.cat.name }})</span>
+                            </span>
+                            <span>
+                                {{ product.price | convertPrice | currency:'USD':'symbol':'1.0' }}
+                            </span>
+                        </h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <a [routerLink]="['/products', product.id]"
+                        class="btn btn-primary">Check Out!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

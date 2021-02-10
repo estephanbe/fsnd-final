@@ -1,0 +1,13 @@
+{
+    "name": "Dates Store",
+    "slogan": "The Best Dates",
+    "cover_photo": "https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg",
+    "settings": {
+        "currency": "USD"
+    },
+    "id": 1,
+    "fname": "Bisharah",
+    "lname": "Estephan",
+    "email": "bosh@bosh.com",
+    "avatar": "https://pbs.twimg.com/profile_images/569243807623819264/xRUGHp7w_400x400.jpeg"
+}

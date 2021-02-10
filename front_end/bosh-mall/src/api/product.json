@@ -1,0 +1,19 @@
+{
+    "id": 1,
+    "name": "Product 1",
+    "description": "sd fas fasd asdfasdf asdf sadf",
+    "creation_date": "29-12-2020",
+    "update_date": "29-12-2020",
+    "price": 100,
+    "cats": ["regular", "extream"],
+    "num_of_sells": 5,
+    "rating": 5,
+    "reviews": [
+        {
+            "reviewer": "Tom Olson",
+            "review": "It is such a good product",
+            "date": "",
+            "review_status": "pending"
+        }
+    ]
+}

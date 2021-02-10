@@ -1,0 +1,92 @@
+<div class="row d-flex justify-content-center">
+    <h1 class="text-center w-100 products-title-section" layout="row">
+        <hr flex/>
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-secondary" [disabled]="noLastProducts"
+                (click)="lastProducts()">
+                    Last Products
+                </button>
+                <div class="title-content">
+                    <p><strong>{{ title }}</strong></p>
+                    <p class="total-products">({{ apiResponse.total_products }} Products)</p>
+                </div>
+                <button class="btn btn-secondary" [disabled]="noMoreProducts"
+                (click)="nextProducts()">
+                    Next Products
+                </button>
+            </div>
+        <hr flex/>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-2 products-sidebar pt-4">
+        <div class="products-sorting" *ngIf="tagID == 0">
+            <mat-form-field class="form-fielt-wrapper" style="border: 0;">
+                <mat-label>Sort by</mat-label>
+                <mat-select class="form-fielt-select" [(value)]="sortingOption">
+                    <mat-option value="dateO">Default</mat-option>
+                    <mat-option value="dateN">Newest</mat-option>
+                    <mat-option value="priceH">Highest Price</mat-option>
+                    <mat-option value="priceL">Lowest Price</mat-option>
+                    <mat-option value="ratingH">Highest Rating</mat-option>
+                    <mat-option value="ratingL">Lowest Rating</mat-option>
+                    <mat-option value="salesH">Highest Number Of Sales</mat-option>
+                    <mat-option value="salesL">Lowest Number Of Sales</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <hr>
+        </div>
+        <div class="products-categories" *ngIf="tagID == 0">
+            <mat-form-field class="form-fielt-wrapper" style="border: 0;">
+                <mat-label>Category</mat-label>
+                <mat-select class="form-fielt-select" [(value)]="categoriesOption">
+                    <mat-option value="0">All</mat-option>
+                    <mat-option *ngFor="let cat of apiResponse.cats | keyvalue" value="{{ cat.key }}" >{{ cat.value }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <hr>
+        </div>
+        <div class="products-tags">
+            <h4 class="mb-3">Tags 
+                <sup style="font-size: 60%;">
+                    <button mat-icon-button *ngIf="tagID" (click)="resetProductsFromTags($event)">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                </sup>
+            </h4>
+            
+            <div class="products-cat mb-2 d-flex flex-wrap" >
+                <button mat-button *ngFor="let tag of apiResponse.tags | keyvalue" (click)="tagSelect(tag.key)">
+                    #{{ tag.value }}
+                </button>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <div class="col-10">
+        <div class="row">
+            <div class="col-4 mb-4" *ngFor="let product of products">
+                <div class="card">
+                    <img class="card-img-top" 
+                    src="{{ product.imageUrl ? product.imageUrl : 'https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg' }}" 
+                    alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-between">
+                            <span>
+                                {{ product.name | titlecase }}  
+                                <span class="cat_title">({{ apiResponse.cats[product.cat_id] }})</span>
+                            </span>
+                            <span>
+                                {{ product.price | convertPrice | currency:'USD':'symbol':'1.0' }}
+                            </span>
+                        </h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <a [routerLink]="['/products', product.id]"
+                        class="btn btn-primary">Check Out!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

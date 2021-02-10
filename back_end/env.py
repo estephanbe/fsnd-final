@@ -1,0 +1,7 @@
+AUTH0_DOMAIN = 'bisharah.us.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'bosh_mall'
+M_TO_M_CLIENT_ID = ''
+M_TO_M_CLIENT_SECRET = ''
+PRODUCT_PER_PAGE = 5
+SELLER_PER_PAGE = 5

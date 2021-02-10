@@ -1,0 +1,10 @@
+<form #addProductForm="ngForm" (ngSubmit)="getFormValues(addProductForm.value)">
+    <mat-form-field appearance="fill">
+        <mat-label>Product Name</mat-label>
+        <input matInput ngModel> 
+    </mat-form-field>
+
+    <button type="submit">
+        Save
+    </button>
+</form>

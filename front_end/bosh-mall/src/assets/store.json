@@ -1,0 +1,106 @@
+[
+    {
+        "productId": 1,
+        "productName": "Product 1",
+        "description": "sd fas fasd asdfasdf asdf sadf",
+        "creationDate": "29-12-2020",
+        "updateDate": "29-12-2020",
+        "price": 100.01,
+        "cats": ["regular", "extream"],
+        "num_of_sells": 5,
+        "rating": 5,
+        "imageUrl": "https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg",
+        "reviews": [
+            {
+                "reviewer": "Tom Olson",
+                "review": "It is such a good product",
+                "date": "",
+                "review_status": "pending"
+            }
+        ]
+    },
+    {
+        "productId": 2,
+        "productName": "Product 2",
+        "description": "sd fas fasd asdfasdf asdf sadf",
+        "creationDate": "20-12-2020",
+        "updateDate": "25-12-2020",
+        "price": 50,
+        "cats": ["regular", "extream"],
+        "num_of_sells": 6,
+        "rating": 3.5,
+        "imageUrl": "https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg",
+        "reviews": []
+    },
+    {
+        "productId": 3,
+        "productName": "Product 3",
+        "description": "sd fas fasd asdfasdf asdf sadf d fas fasd asdfasdf asdf sadf",
+        "creationDate": "22-12-2020",
+        "updateDate": "26-12-2020",
+        "price": 70,
+        "cats": ["regular"],
+        "num_of_sells": 10,
+        "rating": 1.7,
+        "imageUrl": "https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg",
+        "reviews": [
+            {
+                "reviewer": "Tom Olson",
+                "review": "It is such a good product",
+                "date": "22-5-2020",
+                "review_status": "approved"
+            },
+            {
+                "reviewer": "Team Olson",
+                "review": "It is such a good product t is such a go",
+                "date": "22-5-2020",
+                "review_status": "pending"
+            },
+            {
+                "reviewer": "Tom Olson",
+                "review": "It is such a good prouch a good prduct",
+                "date": "22-5-2020",
+                "review_status": "pending"
+            }
+        ]
+    },
+    {
+        "productId": 4,
+        "productName": "Product 4",
+        "description": "sd fas fasd asdfasdf asdf sadf",
+        "creationDate": "12-12-2020",
+        "updateDate": "12-12-2020",
+        "price": 100,
+        "cats": ["extream"],
+        "num_of_sells": 3,
+        "rating": 2.7,
+        "reviews": [
+            {
+                "reviewer": "Tom Olson",
+                "review": "It is such a good product",
+                "date": "",
+                "review_status": "pending"
+            }
+        ]
+    },
+    {
+        "productId": 5,
+        "productName": "Product 5",
+        "description": "sd fas fasd asdfasdf asdf sadf",
+        "creationDate": "29-12-2020",
+        "updateDate": "29-12-2020",
+        "price": 200.65,
+        "cats": ["extream"],
+        "num_of_sells": 1,
+        "rating": 4,
+        "imageUrl": "https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg",
+        "reviews": [
+            {
+                "reviewer": "Tom Olson",
+                "review": "It is such a good product",
+                "date": "",
+                "review_status": "pending"
+            }
+        ]
+    }   
+]

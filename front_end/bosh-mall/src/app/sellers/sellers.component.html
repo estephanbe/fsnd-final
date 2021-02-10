@@ -1,0 +1,10 @@
+<div class="row pt-4 mt-4" > 
+    <a *ngFor="let seller of sellers" [routerLink]="['/sellers', seller.id]" class="col-4 mb-4">
+        <img class="card-img-top" 
+        src="{{ seller.imageUrl ? seller.imageUrl : 'https://miragedates.com/wp-content/uploads/2020/11/IMG_1334-min-scaled.jpg' }}" 
+        alt="{{ seller.name }}">
+        <div class="seller_name_wrapper">
+            <span class="seller_name">{{ seller.name }}</span>
+        </div>
+    </a>
+</div>
