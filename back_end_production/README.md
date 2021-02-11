@@ -1,8 +1,58 @@
 # Full Stack Store API
-This API was made to control the CRUD operations of a simple online store using Flask. To install the requirments run:
+This API was made to control the CRUD operations of a simple online store using Flask. The idea of the application is a multi-vendor e-commerce platform. Every seller with an Admin role can create products, tags, cats, and so on. And the regular user can review and buy the products.
+
+## Installing Dependencies
+
+### Python 3.9
+You need python 3.9 version to run this application. You can follow the instructions on [Python Documentation](https://docs.python.org/3/using/index.html)
+
+### Virtual Environment (pipenv)
+You need to install pipenv on your machine in order to enable the virtual environment. Running your application on a diffrent environment considered a better practice. You can install pipenv following the instructions in [this](https://pypi.org/project/pipenv/) link.
+
+### PIP Dependencies
+Once you have set up pipenvm, you need to install the dependencies using the bellow command
 ```
-pip install -r requirements.txt
+pipenv install
 ```
+
+And then you can run your environment using the bellow command
+```
+pipenv shell
+```
+
+### Local Database Setup
+Once you create the database, navigate to the root folder using your terminal and run the following commands
+```
+flask db init
+flask db migrate -m "Initial migration"
+flask db upgrade
+```
+
+### Local Testing
+To verify that everything is running as it supposed to without any errors, navigate to the app folder and run
+```
+python3 test_app.py
+```
+
+### Running the server
+In order to run your server, you need to setup the environment variables in the terminal as below
+```
+export DATABASE_URL={YOUR_DB_URL}
+export AUTH0_DOMAIN={YOUR_AUTH0_DOMAIN}
+export ALGORITHMS={YOUR_AUTH0_ALGORITHMS}
+export API_AUDIENCE={YOUR_API_AUDIENCE}
+export PRODUCT_PER_PAGE={NUMBER_OF_PRODUCTS_TO_SHOW_PER_PAGE}
+export SELLER_PER_PAGE={NUMBER_OF_SELLERS_TO_SHOW_PER_PAGE}
+export FLASK_APP=app
+export FLASK_DEBUG=true
+export FLASK_ENV=development
+```
+and then you can run the app using the below command
+```
+flask run
+```
+
+
 
 ## Endpoints
 Below are the endpoints which are available to use.
