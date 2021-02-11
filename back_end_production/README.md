@@ -1,6 +1,10 @@
 # Full Stack Store API
 This API was made to control the CRUD operations of a simple online store using Flask. The idea of the application is a multi-vendor e-commerce platform. Every seller with an Admin role can create products, tags, cats, and so on. And the regular user can review and buy the products.
 
+If you want to rock in the e-commerce market and the multi-vendor platforms, clone this app and add your touch into it and ROCK!
+
+You can navigate to the production version on Heroku server by clicking [HERE](https://bosh-mall-api.herokuapp.com/).
+
 ## Installing Dependencies
 
 ### Python 3.9
@@ -52,7 +56,8 @@ and then you can run the app using the below command
 flask run
 ```
 
-
+## Roles
+There are two roles for this application: Admin role & Buyer role. The Admin role can perform the any CRUD operation in the application. The Buyer role can only perform the read operations and the create operation for the Reviews endpoint. 
 
 ## Endpoints
 Below are the endpoints which are available to use.
@@ -60,6 +65,8 @@ Below are the endpoints which are available to use.
 #### Products
 
 GET '/products' - Get all products
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
 
 - Fetches a list of products and another helpful information
 - Request Arguments: None
@@ -74,6 +81,8 @@ GET '/products' - Get all products
 - 404 will be returned if not found
 
 GET '/products/<id>' - Get one product
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
 
 - Fetches a single product
 - Request Arguments: id: integer. 
@@ -97,6 +106,8 @@ GET '/products/<id>' - Get one product
 - 404 will be returned if not found
 
 POST '/products' - Add product
+  Roles: Admin.
+  Permissions: post:product.
 
 - Add on product to the database
 - Request Arguments: none. JSON data: {
@@ -110,7 +121,9 @@ POST '/products' - Add product
 - 422 will be returned if failed to 
 
 PATCH '/products/<id>' - Update product
-
+  Roles: Admin.
+  Permissions: update:product.
+  
 - Update product on the database
 - Request Arguments: product. JSON data: {
   'name': string, 'description': string, 'price': integer, 'image_url': string, 'seller_id': integer, 'cat_id': integer
@@ -123,7 +136,9 @@ PATCH '/products/<id>' - Update product
 - 422 will be returned if failed to 
 
 DELETE '/products/<id>' - Delete product
-
+  Roles: Admin.
+  Permissions: delete:product.
+  
 - Delete product on the database
 - Request Arguments: id.
 - Returns: An object as per below:
@@ -134,7 +149,9 @@ DELETE '/products/<id>' - Delete product
 - 422 will be returned if failed to 
 
 POST '/search' - Search for a product
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches list of product as per the given argument.
 - Request Arguments: None. JSON data: {search_term: string} 
 - Returns: An object as per below:
@@ -145,6 +162,8 @@ POST '/search' - Search for a product
 - 422 will be returned if failed to 
 
 PATCH '/sell_product/<id>' - Used when buyer by product
+  Roles: Admin, Buyer.
+  Permissions: buy:product.
 
 - Increment the value of the product number of sales and the total amount of sales. 
 - Request Arguments: id: integer. 
@@ -157,7 +176,9 @@ PATCH '/sell_product/<id>' - Used when buyer by product
 #### Sellers
 
 GET '/sellers' - Get all sellers
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches and array of sellers and another helpful information
 - Request Arguments: None
 - Returns: An object as per below:
@@ -169,7 +190,9 @@ GET '/sellers' - Get all sellers
 - 404 will be returned if not found
 
 GET '/sellers/<id>' - Get one seller
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a single seller
 - Request Arguments: id: integer. 
 - Returns: An object as per below:
@@ -189,7 +212,9 @@ GET '/sellers/<id>' - Get one seller
 - 404 will be returned if not found
 
 POST '/sellers' - Add seller
-
+  Roles: Admin.
+  Permissions: post:product.
+  
 - Add seller to the database
 - Request Arguments: none. JSON data: {'avatar': string, 'facebook_link': string, 'name': string, 'phone_number': string, 'store_description': string, 'website': string}
 - Returns: An object as per below:
@@ -200,7 +225,9 @@ POST '/sellers' - Add seller
 - 422 will be returned if failed to 
 
 PATCH '/sellers/<id>' - Update seller
-
+  Roles: Admin.
+  Permissions: update:product.
+  
 - Update seller on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -211,7 +238,9 @@ PATCH '/sellers/<id>' - Update seller
 - 422 will be returned if failed to 
 
 DELETE '/sellers/<id>' - Delete seller
-
+  Roles: Admin.
+  Permissions: delete:product.
+  
 - Delete seller on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -222,7 +251,9 @@ DELETE '/sellers/<id>' - Delete seller
 - 422 will be returned if failed to 
 
 POST '/seller_search' - Search for a seller
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Search for a seller
 - Request Arguments: None. JSON data: {search_term: string} 
 - Returns: An object as per below:
@@ -233,7 +264,9 @@ POST '/seller_search' - Search for a seller
 - 422 will be returned if failed to 
 
 GET '/sellers/<id>/products' - Get products under specific seller
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a list of products under specific seller
 - Request Arguments: id: integer
 - Returns: An object as per below:
@@ -249,7 +282,9 @@ GET '/sellers/<id>/products' - Get products under specific seller
 #### Categories
 
 GET '/categories' - Get all categories
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches and array of categories and another helpful information
 - Request Arguments: None
 - Returns: An object as per below:
@@ -261,7 +296,9 @@ GET '/categories' - Get all categories
 - 404 will be returned if not found
 
 GET '/categories/<id>' - Get one category
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a single category
 - Request Arguments: id: integer. 
 - Returns: An object as per below:
@@ -273,7 +310,9 @@ GET '/categories/<id>' - Get one category
 - 404 will be returned if not found
 
 POST '/categories' - Add category
-
+  Roles: Admin.
+  Permissions: post:product.
+  
 - Add category to the database
 - Request Arguments: none. JSON data: {'name': string}
 - Returns: An object as per below:
@@ -284,7 +323,9 @@ POST '/categories' - Add category
 - 422 will be returned if failed to 
 
 PATCH '/categories/<id>' - Update category
-
+  Roles: Admin.
+  Permissions: update:product.
+  
 - Update category on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -295,7 +336,9 @@ PATCH '/categories/<id>' - Update category
 - 422 will be returned if failed to 
 
 DELETE '/categories/<id>' - Delete category
-
+  Roles: Admin.
+  Permissions: delete:product.
+  
 - Delete category on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -306,7 +349,9 @@ DELETE '/categories/<id>' - Delete category
 - 422 will be returned if failed to 
 
 POST '/category_search' - Search for a category
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Search for a category
 - Request Arguments: None. JSON data: {search_term: string} 
 - Returns: An object as per below:
@@ -317,7 +362,9 @@ POST '/category_search' - Search for a category
 - 422 will be returned if failed to 
 
 GET '/categories/<id>/products' - Get products under specific category
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a list of products under specific category
 - Request Arguments: id: integer
 - Returns: An object as per below:
@@ -333,7 +380,9 @@ GET '/categories/<id>/products' - Get products under specific category
 #### Tags
 
 GET '/tags' - Get all tags
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches and array of tags and another helpful information
 - Request Arguments: None
 - Returns: An object as per below:
@@ -345,7 +394,9 @@ GET '/tags' - Get all tags
 - 404 will be returned if not found
 
 GET '/tags/<id>' - Get one tag
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a single tag
 - Request Arguments: id: integer. 
 - Returns: An object as per below:
@@ -357,7 +408,9 @@ GET '/tags/<id>' - Get one tag
 - 404 will be returned if not found
 
 POST '/tags' - Add tag
-
+  Roles: Admin.
+  Permissions: post:product.
+  
 - Add tag to the database
 - Request Arguments: none. JSON data: {'name': string}
 - Returns: An object as per below:
@@ -368,7 +421,9 @@ POST '/tags' - Add tag
 - 422 will be returned if failed to 
 
 PATCH '/tags/<id>' - Update tag
-
+  Roles: Admin.
+  Permissions: update:product.
+  
 - Update tag on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -379,7 +434,9 @@ PATCH '/tags/<id>' - Update tag
 - 422 will be returned if failed to 
 
 DELETE '/tags/<id>' - Delete tag
-
+  Roles: Admin.
+  Permissions: delete:product.
+  
 - Delete tag on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -390,7 +447,9 @@ DELETE '/tags/<id>' - Delete tag
 - 422 will be returned if failed to 
 
 POST '/tag_search' - Search for a tag
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Search for a tag
 - Request Arguments: None. JSON data: {search_term: string} 
 - Returns: An object as per below:
@@ -401,7 +460,9 @@ POST '/tag_search' - Search for a tag
 - 422 will be returned if failed to 
 
 GET '/tags/<id>/products' - Get products under specific tag
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a list of products under specific tag
 - Request Arguments: id: integer
 - Returns: An object as per below:
@@ -418,7 +479,9 @@ GET '/tags/<id>/products' - Get products under specific tag
 #### Reviews
 
 GET '/reviews' - Get all reviews
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches and array of reviews and another helpful information
 - Request Arguments: None
 - Returns: An object as per below:
@@ -430,7 +493,9 @@ GET '/reviews' - Get all reviews
 - 404 will be returned if not found
 
 GET '/reviews/<id>' - Get one review
-
+  Roles: Admin, Buyer.
+  Permissions: no_permissions.
+  
 - Fetches a single review
 - Request Arguments: id: integer. 
 - Returns: An object as per below:
@@ -444,7 +509,9 @@ GET '/reviews/<id>' - Get one review
 - 404 will be returned if not found
 
 POST '/reviews' - Add review
-
+  Roles: Admin, Buyer.
+  Permissions: buy:product.
+  
 - Add review to the database
 - Request Arguments: none. JSON data: {'reviewer': string, 'review': string, 'product_id': integer}
 - Returns: An object as per below:
@@ -455,7 +522,9 @@ POST '/reviews' - Add review
 - 422 will be returned if failed to 
 
 PATCH '/reviews/<id>' - Update review
-
+  Roles: Admin.
+  Permissions: post:product.
+  
 - Update review on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
@@ -466,7 +535,9 @@ PATCH '/reviews/<id>' - Update review
 - 422 will be returned if failed to 
 
 DELETE '/reviews/<id>' - Delete review
-
+  Roles: Admin.
+  Permissions: delete:product.
+  
 - Delete review on the database
 - Request Arguments: id. 
 - Returns: An object as per below:
