@@ -19,7 +19,7 @@ def get_products_route():
     try:
         products = sorted_products()
         pagenated_products = paginated_items(request, products, PRODUCT_PER_PAGE)
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(products):
@@ -28,7 +28,7 @@ def get_products_route():
     # Cat
     try:
         cats = Category.query.order_by(Category.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(cats):
@@ -37,7 +37,7 @@ def get_products_route():
     #Tag
     try:
         tags = Tag.query.order_by(Tag.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(tags):
@@ -58,7 +58,7 @@ def get_product_route(id):
 
     try:
         product = Product.query.get(id)
-    except:
+    except Exception:
         abort(404, 'Product was not found')
 
     if product is None:
@@ -96,7 +96,7 @@ def add_product_route():
         product.insert()
         body["success"] = True
         body["product_id"] = product.id
-    except:
+    except Exception:
         abort(422, "The product was not added.")
 
     return jsonify(body), 200
@@ -107,7 +107,7 @@ def update_product_route(id):
     try:
         product = updated_product(data, id)
         product.update()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with updating the product!')
 
     return jsonify({
@@ -119,7 +119,7 @@ def delete_product_route(id):
     product = Product.query.get(id)
     try:
         deleted_product = product.delete()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with deleting the product!')
 
     return jsonify({
@@ -193,7 +193,7 @@ def search_route():
 def sell_product_route(id):
     try:
         product = Product.query.get(id)
-    except:
+    except Exception:
         abort(404, "Product was not found")
     
     
@@ -202,7 +202,7 @@ def sell_product_route(id):
 
     try:
         product.update()
-    except:
+    except Exception:
         abort(422, "Product sale was not updated")
 
     return jsonify(product.format())

@@ -149,7 +149,7 @@ def sorted_products():
             products = Product.query.order_by(Product.num_of_sales.desc()).all()
         else:
             products = Product.query.order_by(Product.id).all()
-    except:
+    except Exception:
         print(sys.exc_info())
     
     return products
@@ -179,7 +179,7 @@ def sorted_products_by_cat(id):
             products = Product.query.filter_by(cat_id=id).order_by(Product.num_of_sales.desc()).all()
         else:
             products = Product.query.filter_by(cat_id=id).all()
-    except:
+    except Exception:
         print(sys.exc_info())
     
     return products
@@ -209,7 +209,7 @@ def sorted_products_by_seller(id):
             products = Product.query.filter_by(seller=id).order_by(Product.num_of_sales.desc()).all()
         else:
             products = Product.query.filter_by(seller=id).all()
-    except:
+    except Exception:
         print(sys.exc_info())
     
     return products

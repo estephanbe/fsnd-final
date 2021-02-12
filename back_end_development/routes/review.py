@@ -9,7 +9,7 @@ def get_reviews_route():
 
     try:
         reviews = Review.query.order_by(Review.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(reviews):
@@ -26,7 +26,7 @@ def get_review_route(id):
 
     try:
         review = Review.query.get(id)
-    except:
+    except Exception:
         abort(404, 'review was not found')
 
     if review is None:
@@ -72,7 +72,7 @@ def add_review_route():
         review.insert()
         body["success"] = True
         body["review_id"] = review.id
-    except:
+    except Exception:
         abort(422, "The review was not added.")
 
     return jsonify(body), 200
@@ -93,7 +93,7 @@ def update_review_route(id):
             review.product_id = data["product_id"]
         
         review.update()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with updating the review!')
 
     return jsonify({
@@ -106,7 +106,7 @@ def delete_review_route(id):
     try:
         deleted_review = review.delete()
         print(1)
-    except:
+    except Exception:
         abort(422, 'Something went wrong with deleting the review!')
 
     return jsonify({

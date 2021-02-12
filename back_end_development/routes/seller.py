@@ -14,7 +14,7 @@ def get_sellers_route():
     try:
         sellers = Seller.query.order_by(Seller.id).all()
         pagenated_sellers = paginated_items(request, sellers, SELLER_PER_PAGE)
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(sellers):
@@ -33,7 +33,7 @@ def get_seller_route(id):
 
     try:
         seller = Seller.query.get(id)
-    except:
+    except Exception:
         abort(404, 'seller was not found')
 
     if seller is None:
@@ -86,7 +86,7 @@ def add_seller_route():
         seller.insert()
         body["success"] = True
         body["seller_id"] = seller.id
-    except:
+    except Exception:
         abort(422, "The seller was not added.")
 
     return jsonify(body), 200
@@ -97,7 +97,7 @@ def update_seller_route(id):
     try:
         seller = updated_seller(data, id)
         seller.update()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with updating the seller!')
 
     return jsonify({
@@ -109,7 +109,7 @@ def delete_seller_route(id):
     seller = Seller.query.get(id)
     try:
         deleted_seller = seller.delete()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with deleting the seller!')
 
     return jsonify({
@@ -142,13 +142,13 @@ def get_products_by_seller_route(id):
     try:
         products = sorted_products_by_seller(id)
         pagenated_products = paginated_items(request, products, PRODUCT_PER_PAGE)
-    except:
+    except Exception:
         abort(404, 'Couldn\'t find any products related to this category')
 
     # Cat
     try:
         cats = Category.query.order_by(Category.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(cats):
@@ -157,7 +157,7 @@ def get_products_by_seller_route(id):
     #Tag
     try:
         tags = Tag.query.order_by(Tag.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(tags):

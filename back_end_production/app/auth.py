@@ -8,7 +8,7 @@ from .config import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE
 from sqlalchemy.sql.schema import RETAIN_SCHEMA
 
 
-## Exception
+# Exception
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
@@ -42,8 +42,8 @@ def get_jwt_auth_header():
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization header must be bearer token.'
-        }, 401)   
-    
+        }, 401)
+
     jwt = splited_auth_header[1]
     if not jwt or jwt == 'null':
         raise AuthError({
@@ -58,16 +58,15 @@ def verify_and_decode_jwt(token):
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
     unverified_header = jwt.get_unverified_header(token)
-    
-    
+
     if 'kid' not in unverified_header:
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization malformed'
         }, 401)
-    
+
     rsa_key = {}
-    
+
     for key in jwks['keys']:
         if key['kid'] == unverified_header['kid']:
             rsa_key = {
@@ -96,35 +95,39 @@ def verify_and_decode_jwt(token):
             }, 401)
 
         except jwt.JWTClaimsError:
+            description = 'Incorrect claims. '
+            'Please, check the audience and issuer.'
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description': description
             }, 401)
-        
+
         except Exception:
             raise AuthError({
                 'code': 'invalid_header',
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
+
 
 def check_the_permissions(permission, payload):
     if 'permissions' not in payload:
         raise AuthError({
-                'code': 'invalid_permissions',
-                'description': 'check your RBAC settings in Auth0'
-            }, 401)
-    
+            'code': 'invalid_permissions',
+            'description': 'check your RBAC settings in Auth0'
+        }, 401)
+
     if permission not in payload['permissions']:
         raise AuthError({
-                'code': 'insufficient_permission',
-                'description': 'You don\'t have access to the requested resource.'
-            }, 403)
-    
+            'code': 'insufficient_permission',
+            'description': 'You don\'t have access to the requested resource.'
+        }, 403)
+
     return True
+
 
 def requires_auth(permission=''):
     def requires_auth_decorator(f):

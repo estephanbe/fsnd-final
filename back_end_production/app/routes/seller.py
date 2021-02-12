@@ -5,6 +5,7 @@ from flask_cors import CORS
 from ..helper_functions import *
 from ..config import PRODUCT_PER_PAGE, SELLER_PER_PAGE
 
+
 def get_sellers_route():
     sellers = []
     formated_sellers = []
@@ -12,13 +13,11 @@ def get_sellers_route():
     try:
         sellers = Seller.query.order_by(Seller.id).all()
         pagenated_sellers = paginated_items(request, sellers, SELLER_PER_PAGE)
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(sellers):
         formated_sellers = [p.format() for p in pagenated_sellers]
-
-    
 
     return jsonify({
         'success': True,
@@ -26,17 +25,18 @@ def get_sellers_route():
         'total_sellers': len(sellers),
     }), 200
 
+
 def get_seller_route(id):
     body = {}
 
     try:
         seller = Seller.query.get(id)
-    except:
+    except Exception:
         abort(404, 'seller was not found')
 
     if seller is None:
         abort(404, 'seller was not found')
-    
+
     related_products = Product.query.filter_by(seller_id=id).all()
 
     num_of_sales = 0
@@ -45,7 +45,7 @@ def get_seller_route(id):
     total_sold_amount = 0
     for p in related_products:
         total_sold_amount += p.total_sales
-    
+
     related_products = [p.format() for p in related_products]
     for p in related_products:
         p['cat'] = Category.query.get(p['cat_id']).format()
@@ -67,6 +67,7 @@ def get_seller_route(id):
 
     return jsonify(body)
 
+
 def add_seller_route():
     body = {}
     data = request.get_json()
@@ -74,28 +75,44 @@ def add_seller_route():
     # Check if the request was sent empty and abort it.
     if data is None or not len(data):
         abort(422)
-    
-    if 'avatar' in data and 'facebook_link' in data and 'name' in data and 'phone_number' in data and 'store_description' in data and 'website' in data:
+
+    conditions = [
+        'avatar',
+        'facebook_link',
+        'name',
+        'phone_number',
+        'store_description',
+        'website'
+    ]
+    pass_conditions = False
+    for key in len(conditions):
+        pass_conditions = True if key in data else False
+
+    if pass_conditions:
         seller = prepare_seller(data)
     else:
-        abort(422, 'One or more of the parameters for adding a seller is missing.')
-    
+        abort(
+            422,
+            'One or more of the parameters for adding a seller is missing.'
+        )
+
     try:
         seller.insert()
         body["success"] = True
         body["seller_id"] = seller.id
-    except:
+    except Exception:
         abort(422, "The seller was not added.")
 
     return jsonify(body), 200
 
+
 def update_seller_route(id):
     data = request.get_json()
-    
+
     try:
         seller = updated_seller(data, id)
         seller.update()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with updating the seller!')
 
     return jsonify({
@@ -103,11 +120,12 @@ def update_seller_route(id):
         "seller": seller.format()
     })
 
+
 def delete_seller_route(id):
     seller = Seller.query.get(id)
     try:
         deleted_seller = seller.delete()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with deleting the seller!')
 
     return jsonify({
@@ -115,20 +133,22 @@ def delete_seller_route(id):
         "seller": deleted_seller
     })
 
+
 def seller_search_route():
     q_params = request.args
-    
+
     if "search_term" not in q_params:
         abort(422, "The search term should be included in the query string.")
-    
+
     term = q_params.get("search_term")
 
     sellers = Seller.query.filter(Seller.name.ilike('%' + term + "%")).all()
-    
+
     return jsonify({
         'sellers_len': len(sellers),
         'sellers': [s.format() for s in sellers]
     })
+
 
 def get_products_by_seller_route(id):
     products = []
@@ -139,23 +159,24 @@ def get_products_by_seller_route(id):
 
     try:
         products = sorted_products_by_seller(id)
-        pagenated_products = paginated_items(request, products, PRODUCT_PER_PAGE)
-    except:
+        pagenated_products = paginated_items(
+            request, products, PRODUCT_PER_PAGE)
+    except Exception:
         abort(404, 'Couldn\'t find any products related to this category')
 
     # Cat
     try:
         cats = Category.query.order_by(Category.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(cats):
         formated_cats = {cat.id: cat.name for cat in cats}
-    
-    #Tag
+
+    # Tag
     try:
         tags = Tag.query.order_by(Tag.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(tags):
@@ -168,4 +189,3 @@ def get_products_by_seller_route(id):
         'cats': formated_cats,
         'tags': formated_tags,
     })
-

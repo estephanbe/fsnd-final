@@ -13,13 +13,13 @@ def get_products_route():
     tags = []
     formated_cats = []
     formated_tags = []
-    
 
     # Product
     try:
         products = sorted_products()
-        pagenated_products = paginated_items(request, products, PRODUCT_PER_PAGE)
-    except:
+        pagenated_products = paginated_items(
+            request, products, PRODUCT_PER_PAGE)
+    except Exception:
         abort(404)
 
     if 0 < len(products):
@@ -28,22 +28,21 @@ def get_products_route():
     # Cat
     try:
         cats = Category.query.order_by(Category.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(cats):
         formated_cats = {cat.id: cat.name for cat in cats}
-    
-    #Tag
+
+    # Tag
     try:
         tags = Tag.query.order_by(Tag.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(tags):
         formated_tags = {tag.id: tag.name for tag in tags}
 
-    
     # Result
     return jsonify({
         'success': True,
@@ -53,17 +52,18 @@ def get_products_route():
         'tags': formated_tags,
     }), 200
 
+
 def get_product_route(id):
     body = {}
 
     try:
         product = Product.query.get(id)
-    except:
+    except Exception:
         abort(404, 'Product was not found')
 
     if product is None:
         abort(404, 'Product was not found')
-    
+
     reviews = Review.query.filter_by(product_id=id).all()
     tags = product.tags
     seller = Seller.query.get(product.seller_id)
@@ -79,6 +79,7 @@ def get_product_route(id):
 
     return jsonify(body)
 
+
 def add_product_route():
     body = {}
     data = request.get_json()
@@ -86,20 +87,31 @@ def add_product_route():
     # Check if the request was sent empty and abort it.
     if data is None or not len(data):
         abort(422, 'data is empty')
-    
-    if 'name' in data and 'description' in data and 'price' in data and 'image_url' in data and 'seller_id' in data and 'cat_id' in data:
+
+    conditions = [
+        'name', 'description', 'price', 'image_url', 'seller_id', 'cat_id'
+    ]
+    pass_conditions = False
+    for key in len(conditions):
+        pass_conditions = True if key in data else False
+
+    if pass_conditions:
         product = prepare_product(data)
     else:
-        abort(422, 'One or more of the parameters for adding a product is missing.')
-    
+        abort(
+            422,
+            'One or more of the parameters for adding a product is missing.'
+        )
+
     try:
         product.insert()
         body["success"] = True
         body["product_id"] = product.id
-    except:
+    except Exception:
         abort(422, "The product was not added.")
 
     return jsonify(body), 200
+
 
 def update_product_route(id):
     data = request.get_json()
@@ -107,7 +119,7 @@ def update_product_route(id):
     try:
         product = updated_product(data, id)
         product.update()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with updating the product!')
 
     return jsonify({
@@ -115,11 +127,12 @@ def update_product_route(id):
         "product": product.format()
     })
 
+
 def delete_product_route(id):
     product = Product.query.get(id)
     try:
         deleted_product = product.delete()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with deleting the product!')
 
     return jsonify({
@@ -127,32 +140,37 @@ def delete_product_route(id):
         "product": deleted_product
     })
 
+
 def search_route():
     # search will be for products:
     # the search will be looking into the following:
-        # The name of the product
-        # The description of the product
-        # The name of a category
-            # extract the category id based on the reulted name
-            # get all the products with the category id
-        # The name of a tag
-            # get all the products related to each tag
-        # The review
-            # get all the products related to each review
-    # sort the resulted products by default num_of_sales, and provide the option to sort by the columns
+    # The name of the product
+    # The description of the product
+    # The name of a category
+    # extract the category id based on the reulted name
+    # get all the products with the category id
+    # The name of a tag
+    # get all the products related to each tag
+    # The review
+    # get all the products related to each review
+    # sort the resulted products by default num_of_sales, and provide the
+    #   option to sort by the columns
     final_products = []
     q_params = request.args
-    
+
     if "search_term" not in q_params:
         abort(422, "The search term should be included in the query string.")
-    
+
     term = q_params.get("search_term")
 
-    p_from_products = Product.query.filter(Product.name.ilike('%' + term + "%")).all()
-    p_from_products_description = Product.query.filter(Product.description.ilike('%' + term + "%")).all()
+    p_from_products = Product.query.filter(
+        Product.name.ilike('%' + term + "%")).all()
+    p_from_products_description = Product.query.filter(
+        Product.description.ilike('%' + term + "%")).all()
     p_from_products = {p.id: p for p in p_from_products}
-    p_from_products_description = {p.id: p for p in p_from_products_description}
-    
+    p_from_products_description = {
+        p.id: p for p in p_from_products_description}
+
     cats = Category.query.filter(Category.name.ilike('%' + term + "%")).all()
     p_from_cats = {}
     for cat in cats:
@@ -160,7 +178,7 @@ def search_route():
         if 0 < len(related_products):
             for p in related_products:
                 p_from_cats[p.id] = p
-    
+
     reviews = Review.query.filter(Review.review.ilike('%' + term + "%")).all()
     p_from_reviews = {}
     for review in reviews:
@@ -168,7 +186,7 @@ def search_route():
         if 0 < len(related_products):
             for p in related_products:
                 p_from_reviews[p.id] = p
-    
+
     tags = Tag.query.filter(Tag.name.ilike('%' + term + "%")).all()
     p_from_tags = {}
     for tag in tags:
@@ -190,20 +208,19 @@ def search_route():
         'products': final_products
     })
 
+
 def sell_product_route(id):
     try:
         product = Product.query.get(id)
-    except:
+    except Exception:
         abort(404, "Product was not found")
-    
-    
+
     product.num_of_sales += 1
     product.total_sales += product.price
 
     try:
         product.update()
-    except:
+    except Exception:
         abort(422, "Product sale was not updated")
 
     return jsonify(product.format())
-    

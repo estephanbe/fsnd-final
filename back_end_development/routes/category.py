@@ -11,7 +11,7 @@ def get_categories_route():
 
     try:
         categories = Category.query.order_by(Category.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(categories):
@@ -28,7 +28,7 @@ def get_category_route(id):
 
     try:
         category = Category.query.get(id)
-    except:
+    except Exception:
         abort(404, 'category was not found')
 
     if category is None:
@@ -66,7 +66,7 @@ def add_category_route():
         category.insert()
         body["success"] = True
         body["category_id"] = category.id
-    except:
+    except Exception:
         abort(422, "The category was not added.")
 
     return jsonify(body), 200
@@ -80,7 +80,7 @@ def update_category_route(id):
         if "name" in data:
             category.name = data["name"]
             category.update()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with updating the category!')
 
     return jsonify({
@@ -92,7 +92,7 @@ def delete_category_route(id):
     category = Category.query.get(id)
     try:
         deleted_category = category.delete()
-    except:
+    except Exception:
         abort(422, 'Something went wrong with deleting the category!')
 
     return jsonify({
@@ -125,13 +125,13 @@ def get_products_by_category_route(id):
     try:
         products = sorted_products_by_cat(id)
         pagenated_products = paginated_items(request, products, PRODUCT_PER_PAGE)
-    except:
+    except Exception:
         abort(404, 'Couldn\'t find any products related to this category')
 
     # Cat
     try:
         cats = Category.query.order_by(Category.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(cats):
@@ -140,7 +140,7 @@ def get_products_by_category_route(id):
     #Tag
     try:
         tags = Tag.query.order_by(Tag.id).all()
-    except:
+    except Exception:
         abort(404)
 
     if 0 < len(tags):
